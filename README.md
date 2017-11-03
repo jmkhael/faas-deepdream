@@ -1,4 +1,4 @@
-# deep_dream_challenge
+# faas-deepdream
 
 ##Overview
 
