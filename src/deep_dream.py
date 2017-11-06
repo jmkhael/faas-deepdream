@@ -183,7 +183,7 @@ def main():
         return out[0,:,:,:]
 
     def render_lapnorm(t_obj, img0=img_noise, visfunc=visstd,
-                   iter_n=10, step=2.0, octave_n=3, octave_scale=1.4, lap_n=4):
+                   iter_n=10, step=1.0, octave_n=3, octave_scale=1.4, lap_n=4):
         t_score = tf.reduce_mean(t_obj) # defining the optimization objective
         t_grad = tf.gradients(t_score, t_input)[0] # behold the power of automatic differentiation!
         # build the laplacian normalization graph
@@ -202,7 +202,7 @@ def main():
             #clear_output()
             #showarray(visfunc(img))
             im = PIL.Image.fromarray(img.astype('uint8'))
-            im.save("/tmp/output-lap.jpg")
+            im.save("/output/output-lap.jpg")
 
     def render_deepdream(t_obj, img0=img_noise,
                          iter_n=10, step=1.5, octave_n=4, octave_scale=1.4):
@@ -234,7 +234,7 @@ def main():
             #svimg=im.fromarray(img.astype('uint8'))
 
             im = PIL.Image.fromarray(img.astype('uint8'))
-            im.save("/tmp/output-dd.jpg")
+            im.save("/output/output-dd.jpg")
 
 
 
@@ -243,15 +243,19 @@ def main():
     channel = 139 # picking some feature channel to visualize
 
     #open image
-    img0 = PIL.Image.open('/src/faas.jpg')
+    img0 = PIL.Image.open('/img/squirrels.jpg')
     img0 = np.float32(img0)
 
     #Step 4 - Apply gradient ascent to that layer
+    print('deep dreaming started...')
     #render_deepdream(tf.square(T('mixed4c')), img0)
-    #render_deepdream(T(layer)[:,:,:,channel], img0)
+    render_deepdream(T(layer)[:,:,:,channel], img0)
+    print('deep dreaming... woke up')
 
-    #render_lapnorm(T('mixed3b_1x1_pre_relu')[:,:,:,101], img0)
-    render_lapnorm(T('mixed4e_5x5')[:,:,:,2], img0)
+    print('lapnorm started...')
+    render_lapnorm(T('mixed3b_1x1_pre_relu')[:,:,:,101], img0=img0, iter_n=3)
+    #render_lapnorm(T('mixed4e_5x5')[:,:,:,2], img0)
+    print('lapnorm ... woke up')
 
 
 

@@ -8,10 +8,10 @@ RUN pip install numpy
 RUN pip install matplotlib
 RUN pip install requests
 
-ADD deep_dream.py /src/
-WORKDIR /src
-ADD pilatus800.jpg .
-ADD faas.jpg .
-ADD community.png .
+ADD img /img
+ADD src /src
+RUN mkdir /output
 
-CMD ["python", "deep_dream.py"]
+WORKDIR /src
+
+CMD ["python", "/src/deep_dream.py"]
